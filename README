@@ -1,4 +1,33 @@
-Convert icetv's guide to Topfield TGD format.
+icetotgd: Convert icetv's guide to Topfield TGD format.
+
+
+* Running
+
+To run, at the command line:
+% python icetotgd.py
+
+This will create a TGD file for every day of data. These TGD files
+can then be uploaded to the Topfield (e.g. via Altair or Topfield ftpd)
+and used by EPGupload or JustEPG.
+
+
+* Source code
+
+Source code is available on http://repo.or.cz/w/xmltvtotgd.git where
+it can be downloaded (in .tar.gz or .zip format) or cloned (with git)
+which I suggest you do if you want to muck around and submit patches.
+
+You can run the unit tests directly
+% python test_icetotgd.py
+or with nosetests
+% nosetests
+
+
+* License
+
+icetotgd is free open source software covered by the permissive MIT
+license. See LICENSE for details.
+
 
 * Known bugs
 
@@ -8,3 +37,9 @@ Convert icetv's guide to Topfield TGD format.
 ** TGD files are appended to - this probably isn't necessary,
    because the ice guide is in sequence, but it means they
    should be empty or nonexistent before this converter is run.
+
+** The rating isn't extracted from XML, all programmes are
+   rated X.
+
+** Some channels aren't converted properly. There's a crude hack
+   to work around this, which picks out only Melbourne channels.

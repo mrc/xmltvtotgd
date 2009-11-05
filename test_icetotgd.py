@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import unittest
 import icetotgd
 import datetime
@@ -104,3 +105,6 @@ class T(unittest.TestCase):
     def test_filename_from_programme(self):
         filename = icetotgd.tgd_filename_from_programme(self.programme)
         self.assertEqual(filename, '20091030.tgd')
+
+if __name__=='__main__':
+    unittest.main()
