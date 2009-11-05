@@ -1,0 +1,10 @@
+Convert icetv's guide to Topfield TGD format.
+
+* Known bugs
+
+** icetv's guide is in UTC, and is crudely converted to AEST,
+   this needs to be nicer.
+
+** TGD files are appended to - this probably isn't necessary,
+   because the ice guide is in sequence, but it means they
+   should be empty or nonexistent before this converter is run.
