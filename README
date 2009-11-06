@@ -38,8 +38,5 @@ license. See LICENSE for details.
    because the ice guide is in sequence, but it means they
    should be empty or nonexistent before this converter is run.
 
-** The rating isn't extracted from XML, all programmes are
-   rated X.
-
-** Some channels aren't converted properly. There's a crude hack
-   to work around this, which picks out only Melbourne channels.
+** The data in TGD files needs to be sorted, something like this:
+   % for f in *tgd ; sort -n $f > z/$f
