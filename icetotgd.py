@@ -80,6 +80,8 @@ def tgd_filename_from_programme(programme):
     t = timestamp_as_localtime(programme['start'])
     return t.strftime('%Y%m%d.tgd')
 
+sd_channels = ('2','22','3','7','9','10','23','32','72','99','12')
+
 if __name__=='__main__':
     filename = 'iceguide.xml'
     parser = IceToTgd()
@@ -87,9 +89,9 @@ if __name__=='__main__':
     current_tgd_filename = None
     current_tgd_file = None
     for p in parser.programmes:
-        if parser.tgd_channel(p) in ('2','22','3','7','9','10','23','32','72','99','12'):
+        if parser.tgd_channel(p) in sd_channels:
             new_tgd_filename = tgd_filename_from_programme(p)
             if new_tgd_filename != current_tgd_filename:
-                current_tgd_file = open(new_tgd_filename, 'a')
+                current_tgd_file = open('out/' + new_tgd_filename, 'w')
             line = parser.programme_to_tgd(p).encode('UTF-8')
-            current_tgd_file.write(line + '\n')
+            current_tgd_file.write(line + '\r\n')
