@@ -31,6 +31,23 @@ class T(unittest.TestCase):
 		<episode-num system="icetv">14328-72386</episode-num>
 		<previously-shown start="20090917"/>
 	</programme>
+	<programme start="20091105093500 +0000" stop="20091105110500 +0000" channel="32">
+		<title lang="en">Suburb of the Moths</title>
+                <desc lang="en">A suburb is terrorised by shrimp moths from hell.</desc>
+                <credits>
+                        <director>Dave Keenan</director>
+                        <actor>Marvin O'Gravel Ballon-Face</actor>
+                        <actor>Oliver Boliver Butt</actor>
+                        <actor>Zanzibar Buck-Buck McBean</actor>
+                </credits>
+                <date>1996</date>
+		<category lang="en">Movie</category>
+		<subtitles type="teletext"/>
+                <rating system="">
+                        <value>M</value>
+                </rating>
+		<previously-shown/>
+	</programme>
 
 </tv>
 '''}
@@ -88,6 +105,51 @@ class T(unittest.TestCase):
     def test_programme_xml_without_desc(self):
         p = self.parser.programmes[1]
         self.assertEqual(p['desc'], None)
+
+    def test_programme_xml_with_year(self):
+        p = self.parser.programmes[2]
+        self.assertEqual(p['date'], '1996')
+
+    def test_tgd_title_includes_year(self):
+        p = self.parser.programmes[2]
+        title = self.parser.tgd_title(p)
+        self.assertEqual(title, 'Suburb of the Moths (1996)')
+
+    def test_unrated_programmes_are_rated_x(self):
+        p = self.parser.programmes[0]
+        rating = self.parser.tgd_rating(p)
+        self.assertEqual(rating, 'X')
+
+    def test_can_get_programme_rating(self):
+        p = self.parser.programmes[2]
+        rating = self.parser.tgd_rating(p)
+        self.assertEqual(rating, 'M')
+
+    def test_description_says_subtitles_if_they_exist(self):
+        p = self.parser.programmes[2]
+        description = self.parser.tgd_description(p)
+        self.assertTrue(description.index('[Subtitles]'))
+
+    def test_description_doesnt_say_repeat_if_its_not_a_repeat(self):
+        p = self.parser.programmes[0]
+        description = self.parser.tgd_description(p)
+        self.assertTrue(description.find('[Repeat]') == -1)
+
+    def test_description_says_repeat_if_its_a_repeat(self):
+        p = self.parser.programmes[2]
+        description = self.parser.tgd_description(p)
+        self.assertTrue(description.find('[Repeat]') != -1)
+
+    def test_description_says_repeat_with_date_if_its_a_repeat_with_a_known_date(self):
+        p = self.parser.programmes[1]
+        description = self.parser.tgd_description(p)
+        date = datetime.date(2009, 9, 17).strftime('%x')
+        self.assertTrue(description.find('[Repeat, last shown ' + date + ']') != -1)
+
+    def test_tgd_short_description_includes_category(self):
+        p = self.parser.programmes[0]
+        short_desc = self.parser.tgd_short_description(p)
+        self.assertEqual(short_desc, 'The One Where Spiderman Eats Salad [News/Sport]')
 
     def test_programme_xml_without_desc(self):
         p = self.programme.copy()
