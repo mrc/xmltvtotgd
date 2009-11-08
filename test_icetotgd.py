@@ -9,30 +9,30 @@ class T(unittest.TestCase):
             'trivial.xml': '''<?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE tv SYSTEM "http://iceguide.icetv.com.au/iceguide/iceguide.dtd">
 <tv>
-	<channel id="2300">
-		<display-name>TwentyThree</display-name>
-		<region-name>Melbourne</region-name>
-		<lcn>23</lcn>
-	</channel>
-	<programme start="20091030110000 +0000" stop="20091030113000 +0000" channel="2300">
-		<title lang="en">Spiderman</title>
-		<sub-title lang="en">The One Where Spiderman Eats Salad</sub-title>
-		<desc lang="en">Action is his reward.</desc>
-		<category lang="en">News</category>
-		<category lang="en">Sport</category>
-		<episode-num system="icetv">169-0</episode-num>
-	</programme>
-	<programme start="20091104093500 +0000" stop="20091104110500 +0000" channel="32">
-		<title lang="en">Soccer: UEFA Champions League</title>
-		<sub-title lang="en">TBA</sub-title>
-		<category lang="en">Football</category>
-		<category lang="en">Soccer</category>
-		<category lang="en">Sport</category>
-		<episode-num system="icetv">14328-72386</episode-num>
-		<previously-shown start="20090917"/>
-	</programme>
-	<programme start="20091105093500 +0000" stop="20091105110500 +0000" channel="32">
-		<title lang="en">Suburb of the Moths</title>
+        <channel id="2300">
+                <display-name>TwentyThree</display-name>
+                <region-name>Melbourne</region-name>
+                <lcn>23</lcn>
+        </channel>
+        <programme start="20091030110000 +0000" stop="20091030113000 +0000" channel="2300">
+                <title lang="en">Spiderman</title>
+                <sub-title lang="en">The One Where Spiderman Eats Salad</sub-title>
+                <desc lang="en">Action is his reward.</desc>
+                <category lang="en">News</category>
+                <category lang="en">Sport</category>
+                <episode-num system="icetv">169-0</episode-num>
+        </programme>
+        <programme start="20091104093500 +0000" stop="20091104110500 +0000" channel="32">
+                <title lang="en">Soccer: UEFA Champions League</title>
+                <sub-title lang="en">TBA</sub-title>
+                <category lang="en">Football</category>
+                <category lang="en">Soccer</category>
+                <category lang="en">Sport</category>
+                <episode-num system="icetv">14328-72386</episode-num>
+                <previously-shown start="20090917"/>
+        </programme>
+        <programme start="20091105093500 +0000" stop="20091105110500 +0000" channel="32">
+                <title lang="en">Suburb of the Moths</title>
                 <desc lang="en">A suburb is terrorised by shrimp moths from hell.</desc>
                 <credits>
                         <director>Dave Keenan</director>
@@ -41,13 +41,13 @@ class T(unittest.TestCase):
                         <actor>Zanzibar Buck-Buck McBean</actor>
                 </credits>
                 <date>1996</date>
-		<category lang="en">Movie</category>
-		<subtitles type="teletext"/>
+                <category lang="en">Movie</category>
+                <subtitles type="teletext"/>
                 <rating system="">
                         <value>M</value>
                 </rating>
-		<previously-shown/>
-	</programme>
+                <previously-shown/>
+        </programme>
 
 </tv>
 '''}
