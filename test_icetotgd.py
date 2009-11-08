@@ -102,7 +102,7 @@ class T(unittest.TestCase):
         self.assertEqual(tgd_line,
                           '23\t2009/10/30 22:00\t30\tSpiderman\tThe One Where Spiderman Eats Salad [News/Sport]\tAction is his reward.\tX\tN')
 
-    def test_programme_xml_without_desc(self):
+    def test_can_parse_programme_xml_without_desc(self):
         p = self.parser.programmes[1]
         self.assertEqual(p['desc'], None)
 
@@ -151,7 +151,7 @@ class T(unittest.TestCase):
         short_desc = self.parser.tgd_short_description(p)
         self.assertEqual(short_desc, 'The One Where Spiderman Eats Salad [News/Sport]')
 
-    def test_programme_xml_without_desc(self):
+    def test_can_convert_programme_xml_without_desc(self):
         p = self.programme.copy()
         p['desc'] = None
         tgd_line = self.parser.programme_to_tgd(p)
