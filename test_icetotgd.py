@@ -36,9 +36,9 @@ class T(unittest.TestCase):
                 <desc lang="en">A suburb is terrorised by shrimp moths from hell.</desc>
                 <credits>
                         <director>Dave Keenan</director>
-                        <actor>Marvin O'Gravel Ballon-Face</actor>
+                        <actor>Marvin O'Gravel Balloon-Face</actor>
                         <actor>Oliver Boliver Butt</actor>
-                        <actor>Zanzibar Buck-Buck McBean</actor>
+                        <actor>Zanzibar Buck-Buck McFate</actor>
                 </credits>
                 <date>1996</date>
                 <category lang="en">Movie</category>
@@ -48,13 +48,16 @@ class T(unittest.TestCase):
                 </rating>
                 <previously-shown/>
         </programme>
+        <programme start="20091030110000 +0000" stop="20091030113000 +0000" channel="2300">
+                <category lang="en"></category>
+        </programme>
 
 </tv>
 '''}
 
     programme = \
         {'title': 'Spiderman',
-         'subtitle': 'The One Where Spiderman Eats Salad',
+         'sub-title': 'The One Where Spiderman Eats Salad',
          'desc': 'Action is his reward.',
          'categories': ['News', 'Sport'],
          'channel': '2300',
@@ -77,11 +80,11 @@ class T(unittest.TestCase):
     def test_can_load_one_programme(self):
         p = self.parser.programmes[0]
         self.assertEqual(p['title'], 'Spiderman')
-        self.assertEqual(p['subtitle'], 'The One Where Spiderman Eats Salad')
+        self.assertEqual(p['sub-title'], 'The One Where Spiderman Eats Salad')
         self.assertEqual(p['desc'], 'Action is his reward.')
         self.assertEqual(p['categories'], ['News', 'Sport'])
         self.assertEqual(p['channel'], '2300')
-        self.assertEqual(p['rating'], None)
+        self.assertTrue('rating' not in p)
         self.assertEqual(p['start'], datetime.datetime(2009, 10, 30, 11, 0))
         self.assertEqual(p['stop'], datetime.datetime(2009, 10, 30, 11, 30))
 
@@ -104,7 +107,7 @@ class T(unittest.TestCase):
 
     def test_can_parse_programme_xml_without_desc(self):
         p = self.parser.programmes[1]
-        self.assertEqual(p['desc'], None)
+        self.assertTrue('desc' not in p)
 
     def test_programme_xml_with_year(self):
         p = self.parser.programmes[2]
@@ -151,6 +154,10 @@ class T(unittest.TestCase):
         short_desc = self.parser.tgd_short_description(p)
         self.assertEqual(short_desc, 'The One Where Spiderman Eats Salad [News/Sport]')
 
+    def test_blank_categories_arent_retained(self):
+        p = self.parser.programmes[3]
+        self.assertTrue('categories' not in p)
+
     def test_can_convert_programme_xml_without_desc(self):
         p = self.programme.copy()
         p['desc'] = None
@@ -164,9 +171,55 @@ class T(unittest.TestCase):
         self.assertEqual('', str_or_empty(''))
         self.assertEqual('foo', str_or_empty('foo'))
 
+    def test_filter_None_from_dict(self):
+        d = {'a': 3, 'b': [6, 16], 'c': None, 'd': 9}
+        d2 = icetotgd.filter_dict(d, lambda k,v: v is not None)
+        self.assertEqual(d2, {'a': 3, 'b': [6, 16], 'd': 9})
+
+    def test_filter_None_and_empty_list_from_dict(self):
+        def listp(x):
+            return type(x) is type([])
+        d = {'a': 3, 'b': [6, 16], 'c': None, 'd': []}
+        d2 = icetotgd.filter_dict(
+            d,
+            lambda k,v: (v is not None) and (not listp(v) or v))
+        self.assertEqual(d2, {'a': 3, 'b': [6, 16]})
+
     def test_filename_from_programme(self):
         filename = icetotgd.tgd_filename_from_programme(self.programme)
         self.assertEqual(filename, '20091030.tgd')
+
+    def test_programme_xml_with_director(self):
+        p = self.parser.programmes[2]
+        self.assertEqual(p['directors'], ['Dave Keenan'])
+
+    def test_programme_xml_with_actors(self):
+        p = self.parser.programmes[2]
+        self.assertEqual(p['actors'],
+                         ["Marvin O'Gravel Balloon-Face",
+                          'Oliver Boliver Butt',
+                          'Zanzibar Buck-Buck McFate'])
+
+    def test_no_director_means_no_text_for_description(self):
+        p = self.parser.programmes[0]
+        text = self.parser.tgd_director_text(p)
+        self.assertEqual(text, None)
+
+    def test_single_director_text_for_description(self):
+        p = self.parser.programmes[2]
+        text = self.parser.tgd_director_text(p)
+        self.assertEqual(text, 'Dir. Dave Keenan')
+
+    def test_no_actors_means_no_text_for_description(self):
+        p = self.parser.programmes[0]
+        text = self.parser.tgd_cast_text(p)
+        self.assertEqual(text, None)
+
+    def xtest_three_actors_means_some_text_for_description(self):
+        p = self.parser.programmes[2]
+        text = self.parser.tgd_cast_text(p)
+        self.assertEqual(text, "Marvin O'Gravel Balloon-Face, Oliver Boliver Butt, Zanzibar Buck-Buck McFate")
+
 
 if __name__=='__main__':
     unittest.main()
