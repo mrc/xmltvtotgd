@@ -208,17 +208,23 @@ class T(unittest.TestCase):
     def test_single_director_text_for_description(self):
         p = self.parser.programmes[2]
         text = self.parser.tgd_director_text(p)
-        self.assertEqual(text, 'Dir. Dave Keenan')
+        self.assertEqual(text, 'Dave Keenan')
 
     def test_no_actors_means_no_text_for_description(self):
         p = self.parser.programmes[0]
         text = self.parser.tgd_cast_text(p)
         self.assertEqual(text, None)
 
-    def xtest_three_actors_means_some_text_for_description(self):
+    def test_three_actors_means_some_text_for_description(self):
         p = self.parser.programmes[2]
         text = self.parser.tgd_cast_text(p)
         self.assertEqual(text, "Marvin O'Gravel Balloon-Face, Oliver Boliver Butt, Zanzibar Buck-Buck McFate")
+
+    def test_tgd_description_has_cast_and_crew(self):
+        p = self.parser.programmes[2]
+        text = self.parser.tgd_description(p)
+        self.assertTrue(text.index("Marvin O'Gravel Balloon-Face"))
+        self.assertTrue(text.index("Dave Keenan"))
 
 
 if __name__=='__main__':

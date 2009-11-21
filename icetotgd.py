@@ -73,6 +73,12 @@ class IceToTgd(object):
                 date = datetime.date(int(datestr[0:4]), int(datestr[4:6]), int(datestr[6:8]))
                 out = date.strftime('%x')
                 desc += ' [Repeat, last shown ' + out + ']'
+        cast = self.tgd_cast_text(programme)
+        if cast is not None:
+            desc += ' ' + cast + '.'
+        directors = self.tgd_director_text(programme)
+        if directors is not None:
+            desc += ' Dir. ' + directors + '.'
         return desc
 
     def tgd_rating(self, programme):
@@ -80,7 +86,7 @@ class IceToTgd(object):
 
     def tgd_director_text(self, programme):
         if 'directors' in programme:
-            return 'Dir. ' + ', '.join(programme['directors'])
+            return ', '.join(programme['directors'])
         else:
             return None
 
